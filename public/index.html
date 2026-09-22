@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPIKE PROTOCOL — 발로란트식 3D 멀티 FPS</title>
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "socket.io": "https://cdn.socket.io/4.7.2/socket.io.esm.min.js"
+} }
+</script>
+</head>
+<body>
+<div id="game-canvas"></div>
+
+<!-- 로비 -->
+<div id="lobby">
+  <div class="lobby-card">
+    <h1>SPIKE <span>PROTOCOL</span></h1>
+    <div class="sub">5v5 TACTICAL FPS — ATTACK vs DEFENSE • FIRST TO 7</div>
+    <div class="nick-row">
+      <input id="nick" placeholder="닉네임 입력 (예: TenZ)" maxlength="12" value="">
+      <input id="server-url" placeholder="서버 (비워두면 자동)" style="max-width:220px">
+    </div>
+    <div class="agent-grid" id="agent-grid"></div>
+    <button id="start-btn">▶ &nbsp;매치 참가하기</button>
+    <div class="help">
+      <b>WASD</b> 이동 · <b>마우스</b> 조준 · <b>좌클릭</b> 발사 · <b>우클릭</b> 정조준(ADS) · <b>R</b> 재장전 · <b>Shift</b> 걷기(소음↓) · <b>Space</b> 점프 · <b>C</b> 웅크리기<br>
+      <b>Q / E</b> 스킬 · <b>X</b> 궁극기(6킬 충전) · <b>4</b> 스파이크 설치/해체 (사이트 안에서 길게) · <b>B</b> 상점 · <b>Tab</b> 스코어보드 · <b>Enter</b> 채팅<br>
+      공격팀은 스파이크를 A/B 사이트에 설치하고 40초를 지키세요. 수비팀은 저지하거나 7초 해체!
+    </div>
+  </div>
+</div>
+
+<!-- HUD -->
+<div id="hud">
+  <div id="dmg-vignette"></div>
+  <div id="vignette-smoke"></div>
+  <div id="crosshair">
+    <div class="dot"></div>
+    <div class="l" id="ch-t"></div><div class="l" id="ch-b"></div>
+    <div class="l" id="ch-l"></div><div class="l" id="ch-r"></div>
+  </div>
+  <div id="hitmarker"><span style="left:0;top:0;width:10px;height:2px"></span><span style="right:0;top:0;width:10px;height:2px"></span><span style="left:0;bottom:0;width:10px;height:2px"></span><span style="right:0;bottom:0;width:10px;height:2px"></span></div>
+
+  <div id="topbar">
+    <div class="score atk" id="score-atk">0</div>
+    <div>
+      <div id="round-timer">0:20</div>
+      <div id="round-num">ROUND 1 • BUY PHASE</div>
+    </div>
+    <div class="score def" id="score-def">0</div>
+    <div id="phase-label">BUY</div>
+  </div>
+
+  <div id="killfeed"></div>
+  <canvas id="minimap" width="200" height="200"></canvas>
+  <div id="chat"></div>
+  <input id="chat-input" placeholder="채팅 입력 후 Enter">
+
+  <div id="spike-hud">💣 SPIKE</div>
+  <div id="progress-wrap"><div id="progress-label">설치 중...</div><div id="progress-bar"><div id="progress-fill"></div></div></div>
+  <div id="hint"></div>
+  <div id="kill-banner"></div>
+  <div id="round-banner"><h2></h2><p></p></div>
+  <div id="respawn-msg">다음 라운드에 부활합니다...</div>
+
+  <div id="bottom">
+    <div id="hpbox">
+      <div><div id="hp-num">100</div><div id="hp-bar"><div id="hp-fill"></div></div><div id="armor-num">🛡 0</div></div>
+      <div id="abilities"></div>
+    </div>
+    <div id="ammo"><div id="weapon-name">VANDAL</div><div id="ammo-num">25 / 75</div><div id="money-hud" style="color:#00e5cc;font-weight:800">$800</div></div>
+  </div>
+</div>
+
+<div id="flash-overlay"></div>
+
+<div id="shop">
+  <h2>BUY PHASE — <span id="money">$800</span></h2>
+  <div style="color:#8fa3b0;font-size:13px">B 또는 구매 버튼으로 닫기. 구매는 이번 라운드 시작 전에만 가능.</div>
+  <div class="shop-grid" id="shop-grid"></div>
+</div>
+
+<div id="scoreboard"></div>
+
+<script type="module" src="js/config.js"></script>
+<script type="module" src="js/audio.js"></script>
+<script type="module" src="js/map.js"></script>
+<script type="module" src="js/game.js"></script>
+</body>
+</html>
