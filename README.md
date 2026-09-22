@@ -6,6 +6,7 @@
 ## 실행법
 
 ```bash
+git clone https://github.com/jangerine/valorant-like-fps.git
 cd valorant-like-fps
 npm install
 npm start
